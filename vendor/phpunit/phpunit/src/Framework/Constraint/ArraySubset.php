@@ -13,8 +13,6 @@
  *
  * Uses array_replace_recursive() to check if a key value subset is part of the
  * subject array.
- *
- * @since Class available since Release 4.4.0
  */
 class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constraint
 {
@@ -49,6 +47,16 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
      */
     protected function matches($other)
     {
+        //type cast $other & $this->subset as an array to allow
+        //support in standard array functions.
+        if ($other instanceof ArrayAccess) {
+            $other = (array) $other;
+        }
+
+        if ($this->subset instanceof ArrayAccess) {
+            $this->subset = (array) $this->subset;
+        }
+
         $patched = array_replace_recursive($other, $this->subset);
 
         if ($this->strict) {

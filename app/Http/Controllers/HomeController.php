@@ -56,9 +56,10 @@ class HomeController extends Controller
         $num_book = Books::count();
         $num_Hadith = Hadith::count();
         $num_topic = Category::count();
+        $num_subject = Subjects::count();
         $num_narrators = Narrators::count();
         return view('home.index', compact('author','category','book',
-                    'num_author','num_book','num_Hadith','num_topic','num_narrators'));
+                    'num_author','num_book','num_Hadith','num_topic','num_narrators','num_subject'));
     }
 
     /*
@@ -142,6 +143,24 @@ class HomeController extends Controller
 
 
 
+    }
+ /*
+     * Single book
+     * return book information
+    */
+    public function getTefsser($bookid , $hadithid){
+        $bookid = (int)$bookid ;
+        $hadithid = (int)$hadithid ;
+        $hadith = json_decode(file_get_contents('http://booksapi.islam-db.com/api/getpage/'.$bookid.'/'.$hadithid.''), true);
+        $book = json_decode(file_get_contents('http://booksapi.islam-db.com/api/getbook/'.$bookid.''), true);
+        return view('home.tefseer',compact('hadith','book','bookid','hadithid')) ;
+    }
+    public function getTefsserContain($bookid , $hadithid){
+        $bookid = (int)$bookid ;
+        $hadithid = (int)$hadithid ;
+        $hadith = json_decode(file_get_contents('http://booksapi.islam-db.com/api/getpage/'.$bookid.'/'.$hadithid.''), true);
+        $book = json_decode(file_get_contents('http://booksapi.islam-db.com/api/getbook/'.$bookid.''), true);
+        return view('home.tefseer-contain',compact('hadith','book','bookid','hadithid')) ;
     }
 
     /*

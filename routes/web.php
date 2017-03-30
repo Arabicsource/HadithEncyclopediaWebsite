@@ -26,6 +26,8 @@ Route::get('/authors', 'HomeController@Authors'); // Authors page
 Route::get('/single-authors/{id}/{name}', 'HomeController@singleAuthor'); // Single Author page
 Route::get('/all-narrators', 'HomeController@allNarrators'); // Narrators page
 Route::get('/narrators-hadith/{id}/{slug}', 'HomeController@narratorHadith'); // Narrators hadith
+Route::get('/getTefsser/{bookid}/{hadithid}', 'HomeController@getTefsser'); // Narrators hadith
+Route::get('/getTefsserContain/{bookid}/{hadithid}', 'HomeController@getTefsserContain'); // Narrators hadith
 
 Route::get('/search-hadith', 'HomeController@Search'); // Main Search page
 Route::get('/single-book/{id}/{slug}/{subject}/{hid?}','HomeController@singlePage');

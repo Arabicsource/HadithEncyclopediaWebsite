@@ -8,8 +8,59 @@
 
 ##Change Log
 
-### v6.22.4 - 2016-12-07
+### v6.26.0 - 2017-03-03
+- Remove dompdf dependency and let the developers decide on which version they want to use.
+> Note: This is possible breaking change for some users but needed to move forward. See https://github.com/yajra/laravel-datatables/pull/1026 for details. Thanks!
+
+### v6.25.0 - 2017-02-23
+- Add support ordering when search in nested relations. #850
+- Credits to @ethaizone.
+
+### v6.24.4 - 2017-02-09
+- Fix collection case insensitive ordering.
+- Fix [#945](https://github.com/yajra/laravel-datatables/issues/945).
+
+### v6.24.3 - 2017-02-08
+- Add bindings from relations. #981
+- Implementation from PR #962 to fix #960.
+
+### v6.24.2 - 2017-01-26
+- Lock v6.x to support Laravel 5.0 - 5.3 only.
+- Fix #942.
+
+### v6.24.1 - 2017-01-24
+- Fix regex query for pgsql.
+- PR #934, credits to @alfa6661.
+
+### v6.24.0 - 2017-01-24
+- Datatables Pipeline Plugin support (Basic).
+- PR #938, credits to @OzanKurt.
+
+### v6.23.0 - 2017-01-21
+- Add support for onlyTrashed model scope. Fix #928
+- Move withTrashed method to Eloquent engine.
+
+### v6.22.9 - 2017-01-20
+- Do not append table name if instance is expression. #933
+- Fix #927 and possible fix for #873.
+
+### v6.22.8 - 2017-01-19
+- Support for UTF8 characters when creating wildcard query.
+- PR #926, credits to @Rhincodon.
+
+### v6.22.7 - 2017-01-04
+- Add datatables alias to fix singleton. PR #903, credits to @ElfSundae
+- Use static class name instead FQCN. PR #902, credits to @ElfSundae
+- Update license to 2017.
+
+### v6.22.6 - 2017-01-04
+- Fix print header issue when two row are same value. 
+- PR #913, credits to @dineshrabara.
+
+### v6.22.5 - 2016-12-07
 - Fix double wrapping of column name.
+
+### v6.22.4 - Skipped (Sorry!)
 
 ### v6.22.3 - 2016-12-07
 - Fix adding of table prefix before casting the column. PR #876

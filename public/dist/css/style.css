@@ -13,6 +13,7 @@ body{
 }
 .img-logo{
     margin-top: -15px;
+    height: 50px;
 }
 .shadow{
     box-shadow: 2px 3px 5px #000;
@@ -146,7 +147,7 @@ body{
     border-radius: 50px;
     padding:10px;
 }
-.searchid{
+.searchid , .searchtef{
     width:75px !important;
     height: 40px;
     display: inline-block;
@@ -294,6 +295,12 @@ tr.odd >td, tr.even>td{
 }
 #loadMoreNarr{
     display: none;
+}
+.img-tef{
+    display: none;
+    float: right;
+    margin-left: 20px;
+    height: 40px;
 }
 @media (max-width: 992px) {
     .height-panel{

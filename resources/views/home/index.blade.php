@@ -40,20 +40,18 @@
         <div class="col-md-4 col-sm-6">
             <img src="{{asset('dist/img/books.png')}}" alt="الكتب" title="الكتب" class="img-responsive img-up">
             <h3 class="text-info">المئات من الكتب</h3>
-            <p>لدينا حوالي {{$num_book}} كتاب لأكثر من {{$num_author}} مؤلف في {{$num_topic}} موضوع</p>
+            <p>"الكتب والمواضيع" لدينا {{$num_book}} كتاب مقسمة إلى {{$num_topic}} موضوع </p>
         </div>
         <div class="col-md-4 col-sm-6">
             <img src="{{asset('dist/img/author.png')}}" alt="المؤلفين" title="المؤلفين" class="img-responsive img-up">
             <h3 class="text-info">المئات من المؤلفين</h3>
-            <p>لدينا {{$num_author}} كاتب ومؤلف وجامع للاحاديث الصحيحة
-                وآلاف الرواه أكثر من {{$num_narrators}} راوي مع بيانات مفصله
-            </p>
+            <p>"المؤلفين والرواة" لدينا لدينا {{$num_author}} مؤلف وجامع للاحاديث الصحيحة و {{$num_narrators}} الف راوي مع بيانات مفصله</p>
 
         </div>
         <div class="col-md-4 col-sm-12">
             <img src="{{asset('dist/img/category.png')}}" alt="الموضوعات" title="الموضوعات" class="img-responsive img-up">
             <h3 class="text-info">مواضيع كثيرة</h3>
-            <p>لدينا مواضيع كثيرة {{$num_topic}} موضوع في علوم الحديث يمكن البحث فيها للوصول الي ما تريد </p>
+            <p>"الأحاديث" لدينا {{$num_Hadith}} الف حديث مخرج ومفهرس في {{$num_subject}} الف موضوع. لدينا أكثر من 40 ألف حديث مشروح.</p>
         </div>
 
     </div>

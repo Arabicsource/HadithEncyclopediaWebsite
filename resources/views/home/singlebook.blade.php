@@ -7,7 +7,7 @@
             <!-- Start of Search Wrapper -->
     <div class="search-area-wrapper">
         <div class="search-area text-center">
-            <h2 class="text-primary">ابحث في عنواين الكتاب</h2>
+            <h2 class="text-primary">ابحث في عناوين الكتاب</h2>
         </div>
         <div class="search-control" id="more-topic">
             <input type="hidden" name="_token" id="csrf" value="{{csrf_token()}}">

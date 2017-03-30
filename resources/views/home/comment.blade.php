@@ -24,7 +24,7 @@
                 <input type="hidden" value="{{$label}}" name="label">
                 <div class="form-group">
                     <label for="exampleInputEmail1">البريد الألكتروني</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="Email">
+                    <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="Email" required>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputFile">التعليق</label>

@@ -20,11 +20,11 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function testImport()
     {
-        $resolvedLoader = $this->getMock('Symfony\Component\Config\Loader\LoaderInterface');
-        $resolver = $this->getMock('Symfony\Component\Config\Loader\LoaderResolverInterface');
+        $resolvedLoader = $this->getMockBuilder('Symfony\Component\Config\Loader\LoaderInterface')->getMock();
+        $resolver = $this->getMockBuilder('Symfony\Component\Config\Loader\LoaderResolverInterface')->getMock();
         $resolver->expects($this->once())
             ->method('resolve')
-            ->with('admins_routing.yml', 'yaml')
+            ->with('admin_routing.yml', 'yaml')
             ->will($this->returnValue($resolvedLoader));
 
         $originalRoute = new Route('/foo/path');
@@ -35,17 +35,17 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $resolvedLoader
             ->expects($this->once())
             ->method('load')
-            ->with('admins_routing.yml', 'yaml')
+            ->with('admin_routing.yml', 'yaml')
             ->will($this->returnValue($expectedCollection));
 
-        $loader = $this->getMock('Symfony\Component\Config\Loader\LoaderInterface');
+        $loader = $this->getMockBuilder('Symfony\Component\Config\Loader\LoaderInterface')->getMock();
         $loader->expects($this->any())
             ->method('getResolver')
             ->will($this->returnValue($resolver));
 
         // import the file!
         $routes = new RouteCollectionBuilder($loader);
-        $importedRoutes = $routes->import('admins_routing.yml', '/', 'yaml');
+        $importedRoutes = $routes->import('admin_routing.yml', '/', 'yaml');
 
         // we should get back a RouteCollectionBuilder
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollectionBuilder', $importedRoutes);
@@ -89,7 +89,7 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $importedCollection->add('imported_route1', new Route('/imported/foo1'));
         $importedCollection->add('imported_route2', new Route('/imported/foo2'));
 
-        $loader = $this->getMock('Symfony\Component\Config\Loader\LoaderInterface');
+        $loader = $this->getMockBuilder('Symfony\Component\Config\Loader\LoaderInterface')->getMock();
         // make this loader able to do the import - keeps mocking simple
         $loader->expects($this->any())
             ->method('supports')
@@ -104,11 +104,11 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         // 1) Add a route
         $routes->add('/checkout', 'AppBundle:Order:checkout', 'checkout_route');
         // 2) Import from a file
-        $routes->mount('/', $routes->import('admins_routing.yml'));
+        $routes->mount('/', $routes->import('admin_routing.yml'));
         // 3) Add another route
         $routes->add('/', 'AppBundle:Default:homepage', 'homepage');
         // 4) Add another route
-        $routes->add('/admins', 'AppBundle:admins:dashboard', 'admins_dashboard');
+        $routes->add('/admin', 'AppBundle:Admin:dashboard', 'admin_dashboard');
 
         // set a default value
         $routes->setDefault('_locale', 'fr');
@@ -122,7 +122,7 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
             'imported_route1',
             'imported_route2',
             'homepage',
-            'admins_dashboard',
+            'admin_dashboard',
         ), $actualRouteNames);
 
         // make sure the defaults were set
@@ -137,7 +137,7 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $collectionBuilder = new RouteCollectionBuilder();
 
         // add a "named" route
-        $collectionBuilder->add('/admins', 'AppBundle:admins:dashboard', 'admins_dashboard');
+        $collectionBuilder->add('/admin', 'AppBundle:Admin:dashboard', 'admin_dashboard');
         // add an unnamed route
         $collectionBuilder->add('/blogs', 'AppBundle:Blog:list')
             ->setMethods(array('GET'));
@@ -148,7 +148,7 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $actualCollection = $collectionBuilder->build();
         $actualRouteNames = array_keys($actualCollection->all());
         $this->assertEquals(array(
-            'admins_dashboard',
+            'admin_dashboard',
             'GET_blogs',
             '100',
         ), $actualRouteNames);
@@ -240,7 +240,7 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         // empty prefix is of course ok
         $tests[] = array('', '/foo', '/foo');
         // normal prefix - does not matter if it's a wildcard
-        $tests[] = array('/{admins}', '/foo', '/{admins}/foo');
+        $tests[] = array('/{admin}', '/foo', '/{admin}/foo');
         // shows that a prefix will always be given the starting slash
         $tests[] = array('0', '/foo', '/0/foo');
 
@@ -252,29 +252,29 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testFlushSetsPrefixedWithMultipleLevels()
     {
-        $loader = $this->getMock('Symfony\Component\Config\Loader\LoaderInterface');
+        $loader = $this->getMockBuilder('Symfony\Component\Config\Loader\LoaderInterface')->getMock();
         $routes = new RouteCollectionBuilder($loader);
 
         $routes->add('homepage', 'MainController::homepageAction', 'homepage');
 
-        $adminsRoutes = $routes->createBuilder();
-        $adminsRoutes->add('/dashboard', 'adminsController::dashboardAction', 'admins_dashboard');
+        $adminRoutes = $routes->createBuilder();
+        $adminRoutes->add('/dashboard', 'AdminController::dashboardAction', 'admin_dashboard');
 
-        // embedded collection under /admins
-        $adminsBlogRoutes = $routes->createBuilder();
-        $adminsBlogRoutes->add('/new', 'BlogController::newAction', 'admins_blog_new');
-        // mount into admins, but before the parent collection has been mounted
-        $adminsRoutes->mount('/blog', $adminsBlogRoutes);
+        // embedded collection under /admin
+        $adminBlogRoutes = $routes->createBuilder();
+        $adminBlogRoutes->add('/new', 'BlogController::newAction', 'admin_blog_new');
+        // mount into admin, but before the parent collection has been mounted
+        $adminRoutes->mount('/blog', $adminBlogRoutes);
 
-        // now mount the /admins routes, above should all still be /blog/admins
-        $routes->mount('/admins', $adminsRoutes);
+        // now mount the /admin routes, above should all still be /blog/admin
+        $routes->mount('/admin', $adminRoutes);
         // add a route after mounting
-        $adminsRoutes->add('/users', 'adminsController::userAction', 'admins_users');
+        $adminRoutes->add('/users', 'AdminController::userAction', 'admin_users');
 
         // add another sub-collection after the mount
-        $otheradminsRoutes = $routes->createBuilder();
-        $otheradminsRoutes->add('/sales', 'StatsController::indexAction', 'admins_stats_sales');
-        $adminsRoutes->mount('/stats', $otheradminsRoutes);
+        $otherAdminRoutes = $routes->createBuilder();
+        $otherAdminRoutes->add('/sales', 'StatsController::indexAction', 'admin_stats_sales');
+        $adminRoutes->mount('/stats', $otherAdminRoutes);
 
         // add a normal collection and see that it is also prefixed
         $importedCollection = new RouteCollection();
@@ -287,24 +287,24 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('load')
             ->will($this->returnValue($importedCollection));
-        // import this from the /admins route builder
-        $adminsRoutes->import('admins.yml', '/imported');
+        // import this from the /admin route builder
+        $adminRoutes->import('admin.yml', '/imported');
 
         $collection = $routes->build();
-        $this->assertEquals('/admins/dashboard', $collection->get('admins_dashboard')->getPath(), 'Routes before mounting have the prefix');
-        $this->assertEquals('/admins/users', $collection->get('admins_users')->getPath(), 'Routes after mounting have the prefix');
-        $this->assertEquals('/admins/blog/new', $collection->get('admins_blog_new')->getPath(), 'Sub-collections receive prefix even if mounted before parent prefix');
-        $this->assertEquals('/admins/stats/sales', $collection->get('admins_stats_sales')->getPath(), 'Sub-collections receive prefix if mounted after parent prefix');
-        $this->assertEquals('/admins/imported/foo', $collection->get('imported_route')->getPath(), 'Normal RouteCollections are also prefixed properly');
+        $this->assertEquals('/admin/dashboard', $collection->get('admin_dashboard')->getPath(), 'Routes before mounting have the prefix');
+        $this->assertEquals('/admin/users', $collection->get('admin_users')->getPath(), 'Routes after mounting have the prefix');
+        $this->assertEquals('/admin/blog/new', $collection->get('admin_blog_new')->getPath(), 'Sub-collections receive prefix even if mounted before parent prefix');
+        $this->assertEquals('/admin/stats/sales', $collection->get('admin_stats_sales')->getPath(), 'Sub-collections receive prefix if mounted after parent prefix');
+        $this->assertEquals('/admin/imported/foo', $collection->get('imported_route')->getPath(), 'Normal RouteCollections are also prefixed properly');
     }
 
     public function testAutomaticRouteNamesDoNotConflict()
     {
         $routes = new RouteCollectionBuilder();
 
-        $adminsRoutes = $routes->createBuilder();
+        $adminRoutes = $routes->createBuilder();
         // route 1
-        $adminsRoutes->add('/dashboard', '');
+        $adminRoutes->add('/dashboard', '');
 
         $accountRoutes = $routes->createBuilder();
         // route 2
@@ -314,7 +314,7 @@ class RouteCollectionBuilderTest extends \PHPUnit_Framework_TestCase
         $accountRoutes->add('/dashboard', '')
             ->setMethods(array('POST'));
 
-        $routes->mount('/admins', $adminsRoutes);
+        $routes->mount('/admin', $adminRoutes);
         $routes->mount('/account', $accountRoutes);
 
         $collection = $routes->build();

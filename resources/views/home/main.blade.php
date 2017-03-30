@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{asset('dist/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('dist/css/jquery-ui.css')}}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="shortcut icon" href="{{asset('dist/img/librarylogo.png')}}"/>
+    <link rel="shortcut icon" href="{{asset('dist/img/favicon.png')}}"/>
     <link href="{{asset('dist/css/bootstrap-editable.css')}}" rel="stylesheet">
 
 
@@ -29,7 +29,7 @@
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <a class="navbar-brand text-center" href="{{url('/')}}">
-                            <img alt="Brand" src="{{asset('dist/img/logo.png')}}" class="img-logo" alt="logo" title="موسوعة الحديث">
+                            <img alt="Brand" src="{{asset('dist/img/New-logo.png')}}" class="img-logo" alt="logo" title="موسوعة الحديث">
                         </a>
                     </div>
                 </div>

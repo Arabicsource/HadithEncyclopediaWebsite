@@ -284,7 +284,7 @@ $( document ).ready(function() {
         var token = $('#csrf').val();
         var hrf = '/single-book/' + bookid + '/' + slug + '/' + subjectid + '/' + hadithid + '';
         var comment = 'single-book/' + bookid + '/' + slug + '/' + subjectid + '/' + (hId +1) +'' ;
-
+        $('.img-tef').hide();
         $.ajax({
             type: 'POST',
             url: path,
@@ -319,6 +319,7 @@ $( document ).ready(function() {
                     });
 
                     $('#comment').attr('href', '/comment?url=' + comment + '&type=hadith'+'&label='+ title +' - '+(hId +1));
+                    LoadTefseer();
 
                 }
             }
@@ -339,8 +340,7 @@ $( document ).ready(function() {
         var slug = $(this).data('slug');
         var hrf = '/single-book/' + bookid + '/' + slug + '/' + subjectid + '/' + hadithid + '';
         var comment = 'single-book/' + bookid + '/' + slug + '/' + subjectid + '/' + (hId -1)  ;
-
-
+        $('.img-tef').hide();
         $.ajax({
             type: 'POST',
             url: path,
@@ -376,6 +376,7 @@ $( document ).ready(function() {
                     });
 
                     $('#comment').attr('href', '/comment?url=' + comment + '&type=hadith'+'&label='+ title +' - '+(hId -1));
+                    LoadTefseer();
 
 
                 }
@@ -399,6 +400,7 @@ $( document ).ready(function() {
             var slug = $(this).data('slug');
             var hrf = '/single-book/' + bookid + '/' + slug + '/' + subjectid + '/' + hadithid + '';
             var comment = 'single-book/' + bookid + '/' + slug + '/' + subjectid + '/' + (hId - 1);
+            $('.img-tef').hide();
             $.ajax({
                 type: 'POST',
                 url: path,
@@ -430,6 +432,7 @@ $( document ).ready(function() {
                                 }
                             });
                         });
+                        LoadTefseer();
 
                         $('#comment').attr('href', '/comment?url=' + comment + '&type=hadith' + '&label=' + title + ' - ' + (hId - 1));
 
@@ -646,7 +649,7 @@ $( document ).ready(function() {
     });
 
         /*delete cookies*/
-        $('.close-cookie').click(function(){
+   $('.close-cookie').click(function(){
             var id = $(this).data('id');
             var path = '/deletecookie'
             $('#cookie'+id).fadeOut(500);
@@ -661,4 +664,121 @@ $( document ).ready(function() {
             return false ;
 
         });
+    function LoadTefseer () {
+        var HadithId = $('#data-prev').data('id');
+        var BookId = $('#data-prev').data('book');
+        var path = "http://hadithapi.islam-db.com/api/gettafseer/"+BookId+"/"+HadithId ;
+        $.ajax({
+            type: 'GET',
+            url: path,
+            success: function (html) {
+                if (html.length > 0) {
+                    $('.img-tef').show();
+                    var Lenval = html.length ;
+                        $.each(html,function(key , val){
+
+                            $("#test").append("<div class='col-sm-6'><div class='panel panel-default'>" +
+                                "<div class='panel-body text-center'>" +
+                                "<img src='/dist/img/books.png' class='img-book'>" +
+                                "<a href='/getTefsser/"+val.tafseerbookid+"/"+val.tafseerpageid+"'><h3 class='text-info'>"+val.tafseerbooktitle+"</h3></a></div></div>" +
+                                "</div>");
+
+                        });
+                }
+            }
+        });
+
+
+    }
+    LoadTefseer();
+
+    /*Next and Prev For Tefseer*/
+    $('body').on('click', '#tefser-next', function (e) {
+        var bookid = $(this).data('book');
+        var hId = $(this).data('hadith')+1;
+        var path = "/getTefsserContain/"+bookid+"/"+hId+"" ;
+        $.ajax({
+            type: 'GET',
+            url: path,
+            success: function (html) {
+                if (html != '') {
+                    $('.hadith-panel').html(html);
+                }
+            }
+        });
+        return false;
+
+    });
+    $('body').on('click', '#tefser-first', function (e) {
+        var bookid = $(this).data('book');
+        var hId = $(this).data('id');
+        var path = "/getTefsserContain/"+bookid+"/"+hId+"" ;
+        $.ajax({
+            type: 'GET',
+            url: path,
+            success: function (html) {
+                if (html != '') {
+                    $('.hadith-panel').html(html);
+                }
+            }
+        });
+        return false;
+
+    });
+    $('body').on('click', '#tefser-prev', function (e) {
+        var bookid = $(this).data('book');
+        var hId = $(this).data('hadith')-1;
+        var path = "/getTefsserContain/"+bookid+"/"+hId+"" ;
+        $.ajax({
+            type: 'GET',
+            url: path,
+            success: function (html) {
+                if (html != '') {
+                    $('.hadith-panel').html(html);
+                }
+            }
+        });
+        return false;
+
+    });
+    $('body').on('click', '#tefser-last', function (e) {
+        var bookid = $(this).data('book');
+        var hId = $(this).data('id');
+        var path = "/getTefsserContain/"+bookid+"/"+hId+"" ;
+        $.ajax({
+            type: 'GET',
+            url: path,
+            success: function (html) {
+                if (html != '') {
+                    $('.hadith-panel').html(html);
+                }
+            }
+        });
+        return false;
+
+    });
+    $('body').on('dblclick','#hadithtef',function () {
+        var hadithid = $(this).data('id');
+        var bookid = $(this).data('book');
+        var editableText = $("<input type='text' data-book="+bookid+" class='form-control searchtef' name='hadithid' value="+hadithid+">");
+        $(this).replaceWith(editableText);
+    });
+    $('body').on('keypress', '.searchtef', function (e) {
+        if (e.keyCode == 13){
+            var bookid = $(this).data('book');
+            var hId = $(this).val();
+            var path = "/getTefsserContain/"+bookid+"/"+hId+"" ;
+            $.ajax({
+                type: 'GET',
+                url: path,
+                success: function (html) {
+                    if (html != '') {
+                        $('.hadith-panel').html(html);
+                    }
+                }
+            });
+            return false;
+        }});
+
+
 });

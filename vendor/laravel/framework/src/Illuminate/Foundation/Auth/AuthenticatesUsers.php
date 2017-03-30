@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Lang;
 trait AuthenticatesUsers
 {
     use RedirectsUsers, ThrottlesLogins;
-    
+
     /**
      * Show the application's login form.
      *
@@ -17,7 +17,7 @@ trait AuthenticatesUsers
      */
     public function showLoginForm()
     {
-        return view('admins.login');
+        return view('auth.login');
     }
 
     /**
@@ -155,7 +155,7 @@ trait AuthenticatesUsers
 
         $request->session()->regenerate();
 
-        return redirect('/login');
+        return redirect('/');
     }
 
     /**
